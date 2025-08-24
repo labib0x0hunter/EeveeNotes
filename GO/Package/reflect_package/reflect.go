@@ -5,10 +5,6 @@ import "reflect"
 // Incomplete
 
 func main() {
-	reflect.Append()
-	reflect.ArrayOf()
-	reflect.ValueOf()
-	reflect.ChanOf()
-	reflect.PointerTo()
-	reflect.MakeChan()
+	reflect.Value{}
+	reflect.Type{}
 }
