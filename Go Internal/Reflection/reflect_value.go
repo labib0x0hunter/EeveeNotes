@@ -49,8 +49,9 @@ func main() {
 	fmt.Println(v.Type())   // int
 
 	v = reflect.ValueOf(&y)
-	fmt.Println(v.CanSet()) // false
-	fmt.Println(v.Type())   // *int
+	fmt.Println(v.CanSet())                     // false
+	fmt.Println(v.Type())                       // *int
+	fmt.Println(v.Type().Kind() == reflect.Ptr) // true
 
 	v = v.Elem()               // dereference
 	fmt.Println(v.Type())      // int
