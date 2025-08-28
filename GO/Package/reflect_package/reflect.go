@@ -5,6 +5,6 @@ import "reflect"
 // Incomplete
 
 func main() {
-	reflect.Value{}
-	reflect.Type{}
+	_ = reflect.Value{} // struct
+	// reflect.Type // interface
 }
