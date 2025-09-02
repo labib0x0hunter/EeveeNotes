@@ -4,7 +4,7 @@ import "fmt"
 
 func EscapeToHeap() {
 	n := new(int)
-	fmt.Println(n)
+	fmt.Println(n) // escape
 }
 
 func NoEscapeToHeap() {

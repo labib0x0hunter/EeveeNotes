@@ -66,10 +66,18 @@ func main() {
 	//
 	// s[0:len(s1)]
 
+	/** --- **/
+
 	// Interesting case
 	newS := []int{1, 2, 3}
-	newY := newS     // newS and newY point to the same backing array
-	newY[0] = 100    // Modifying newY also modifies newS
+	newY := newS // newS and newY point to the same backing array
+	newY[0] = 100
+
+	// Why ?
+	// Because they both share the same backed-array,
+	// so, changing one can effect other,
+	// use copy() function to avoid this behaviour
+
 	PrintSlice(newS) // Output: [100 2 3]
 	PrintSlice(newY) // Output: [100 2 3]
 
