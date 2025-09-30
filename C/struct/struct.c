@@ -16,6 +16,9 @@ union Data{
 
 int32_t main() {
 
+    // printf("%lu\n", sizeof root);
+    // printf("%lu\n", sizeof *root);
+
     slice x;
     x.ptr = NULL;
     x.len = 1;
