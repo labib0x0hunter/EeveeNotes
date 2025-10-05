@@ -74,7 +74,7 @@ int main() {
     buffer[strcspn(buffer, "\n")] = '\0';
 
     char *newStr;
-    newStr = malloc(strlen(buffer) + 1);    // reserve one room for '\0'
+    newStr = malloc(strlen(buffer) + 1);    // reserve one room for '\0', must must free() later
     strcpy(newStr, buffer);
 
     printf("%s\n", newStr);
@@ -98,6 +98,8 @@ int main() {
     // toknize from newStr
     token = strtok(newStr, " ");    // newStr from 'input from stdin' section
     printf("%s\n", token);
+
+    free(newStr);
 
     /* */
     // sprintf();
