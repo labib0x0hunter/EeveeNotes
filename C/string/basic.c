@@ -68,6 +68,11 @@ int main() {
     // memcmp();
     // memchr();
 
+
+    /// strcpy vs memcpy ///
+    // strcpy -> copies until found NULL terminator('\0)
+    // memcpy -> you tell how many should be copied ..
+
     /* input from stdin */
     char buffer[1024];
     fgets(buffer, sizeof(buffer) - 1, stdin);

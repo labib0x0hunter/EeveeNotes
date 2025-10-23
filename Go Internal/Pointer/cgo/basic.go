@@ -16,7 +16,8 @@ int Mult(int a, int b) {
 	return a * b;
 }
 */
-import "C"
+import "C" // No newline between C code and import
+
 import "fmt"
 
 func main() {
