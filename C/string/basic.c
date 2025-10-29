@@ -32,6 +32,7 @@ int main() {
     sss[3] = '\0';
     printf("%s\n", sss);
 
+    // strncpy() doesn't copy null-terminator. you must do it your own.
     strncpy(sss, "xyz", sizeof(sss));
     sss[3] = '\0';
     printf("%s\n", sss);
@@ -40,7 +41,11 @@ int main() {
     char s8[8] = "abcd\0efg";
     printf("%s\n", s8);
 
-    size_t idx = strcspn(s8, "\0");
+    // IMPORTANT TO NOTEEE......., give the index from where the iteration begins.
+    size_t idx = strcspn(s8, "\0"); // 4
+    printf("%zu\n", idx);
+
+    size_t idx = strcspn(s8 + 5, "f"); // 2
     printf("%zu\n", idx);
 
     /* */
