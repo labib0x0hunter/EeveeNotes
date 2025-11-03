@@ -69,6 +69,7 @@ object_t* NewObjectString(char* val) {
 	}
 	obj->Kind = STRING;
 	obj->Data.v_string = val;	// is there any problem ?? we just copied the pointer to obj.
+								// or just strcpy() string...
 	return obj;
 }
 
@@ -104,7 +105,7 @@ object_t* NewObjectVector3(object_t* x, object_t* y, object_t* z) {
 
 // obj[index] = val
 bool set_array(object_t* obj, int index, object_t* val) {
-	if (obj == NULL) return false;
+	if (obj == NULL || val == NULL) return false;
 	if (obj->Kind != ARRAY) return false;
 	if (index >= obj->Data.v_array.len) return false;
 	obj->Data.v_array.data[index] = val;
