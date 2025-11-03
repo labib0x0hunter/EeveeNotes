@@ -3,13 +3,13 @@
 #include<string.h>
 #include<stdbool.h>
 
-const int pop_sized = 256;
-void* POP_REF[pop_sized];
-int track_ptr = 0;
+// const int pop_sized = 256;
+// void* POP_REF[pop_sized];
+// int track_ptr = 0;
 
 typedef struct GStack {
 	void** data;	// (void*)*
-	bool* heapTrack;
+	// bool* heapTrack;
 	int len;
 	int cap;
 } stack;
@@ -27,12 +27,12 @@ stack* newStack(int cap) {
 		return NULL;
 	}
 
-	st->heapTrack = (bool*) malloc(sizeof(bool) * cap);
-	if (st->heapTrack == NULL) {
-		free(st->data);
-		free(st);
-		return NULL;
-	}
+	// st->heapTrack = (bool*) malloc(sizeof(bool) * cap);
+	// if (st->heapTrack == NULL) {
+	// 	free(st->data);
+	// 	free(st);
+	// 	return NULL;
+	// }
 
 	st->cap = cap;
 	st->len = 0;
@@ -54,23 +54,24 @@ bool resize(stack* st) {
 		st->cap /= 2;
 		return false;
 	}
-	bool* heapTrack = (bool*) realloc(st->heapTrack, sizeof(bool) * st->cap);
-	if (heapTrack == NULL) {
-		st->cap /= 2;
-		free(data);	// can be dangerous :)
-		return false;
-	}
+	// bool* heapTrack = (bool*) realloc(st->heapTrack, sizeof(bool) * st->cap);
+	// if (heapTrack == NULL) {
+	// 	st->cap /= 2;
+	// 	free(data);	// can be dangerous :)
+	// 	return false;
+	// }
 	st->data = data;
-	st->heapTrack = heapTrack;
+	// st->heapTrack = heapTrack;
 	return true;
 }
 
-bool push(stack* st, void* x, bool onHeap) {
+// bool push(stack* st, void* x, bool onHeap) {
+bool push(stack* st, void* x) {
 	if (isFull(st)) { 
 		if (!resize(st)) return false;
 	}
 	st->data[st->len] = x;
-	st->heapTrack[st->len] = onHeap;
+	// st->heapTrack[st->len] = onHeap;
 	st->len++;
 	return true;
 }
@@ -83,7 +84,7 @@ void* pop(stack* st) {
 		return NULL;	// what if we store -1 in our stack ?
 	}
 	void* x = st->data[st->len - 1];
-	if (st->heapTrack[st->len - 1]) POP_REF[track_ptr++] = x;
+	// if (st->heapTrack[st->len - 1]) POP_REF[track_ptr++] = x;
 	st->len--;
 	return x;
 }
@@ -101,17 +102,17 @@ void freeStack(stack* st) {
 	}
 
 	if (st->data) {
-		for (int i = 0; i < st->len; i++) {
-			if (st->heapTrack[i]) free(st->data[i]);
-		}
+		// for (int i = 0; i < st->len; i++) {
+		// 	if (st->heapTrack[i]) free(st->data[i]);
+		// }
 		free(st->data);
 	}
-	if (st->heapTrack) free(st->heapTrack);
+	// if (st->heapTrack) free(st->heapTrack);
 	free(st);
 
-	for (int i = 0; i < track_ptr; i++) {
-		free(POP_REF[i]);
-	}
+	// for (int i = 0; i < track_ptr; i++) {
+	// 	free(POP_REF[i]);
+	// }
 }
 
 int main() {
@@ -121,12 +122,12 @@ int main() {
 
 	int arr[10] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
-	push(st, (void*) &arr[0], 0);
+	push(st, (void*) &arr[0]);
 
 	int* x = (int*) malloc(sizeof(int));
 	*x = 30;
 
-	push(st, x, 1);
+	push(st, x);
 	// push(st, 30);
 	// printf("%d\n", pop(st));
 	// printf("%d\n", pop(st));
@@ -146,6 +147,7 @@ int main() {
 	// printf("%d\n", pop(st));
 
 	freeStack(st);
+	free(x);
 
 	// push diff types
 	// *int
