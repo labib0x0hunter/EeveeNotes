@@ -37,7 +37,7 @@ bool isFull(stack* st) {
 
 bool resize(stack* st) {
 	st->cap += st->cap;	// resize by double
-	int* data = (int*) realloc(st->data, st->cap);
+	int* data = (int*) realloc(st->data, sizeof(int) * st->cap);
 	if (data == NULL) {
 		st->cap /= 2;
 		return false;
