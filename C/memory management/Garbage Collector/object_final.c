@@ -68,8 +68,16 @@ object_t* NewObjectString(char* val) {
 		return NULL;
 	}
 	obj->Kind = STRING;
-	obj->Data.v_string = val;	// is there any problem ?? we just copied the pointer to obj.
-								// or just strcpy() string...
+	// obj->Data.v_string = val;	// is there any problem ?? we just copied the pointer to obj.
+	// 							// or just strcpy() string...
+	int n = strlen(val);
+	obj->Data.v_string = (char*) malloc(sizeof(char) * (n + 1));	// don't forget for '\0'
+	if (obj->Data.v_string == NULL) {
+		free(obj);
+		return NULL;
+	}
+	strncpy(obj->Data.v_string, val, sizeof(char) * n);
+	obj->Data.v_string[n] = '\0';	// null terminator..
 	return obj;
 }
 
@@ -147,29 +155,54 @@ object_t* add(object_t* a, object_t* b) {
 	switch (a->Kind) {
 		case INT: {
 			switch (b->Kind) {
+				case INT:
+					return NewObjectInt(a->Data.v_int + b->Data.v_int);
+				case FLOAT:
+					return NewObjectFloat((float) a->Data.v_int + b->Data.v_float);
 				default:
 					return NULL;
 			}
-			break;
 		}
 		case FLOAT: {
 			switch (b->Kind) {
+				case INT:
+					return NewObjectFloat((float) b->Data.v_int + a->Data.v_float);
+				case FLOAT:
+					return NewObjectFloat(a->Data.v_float + b->Data.v_float);
 				default:
 					return NULL;
 			}
-			break;
 		}
 		case STRING: {
 			if (b->Kind != STRING) return NULL;
-			break;
+			int n = strlen(a->Data.v_string), m = strlen(b->Data.v_string);
+			char* tmpStr = (char*) malloc(sizeof(char) * (n + m + 1));
+			strncpy(tmpStr, a->Data.v_string, sizeof(char) * n);
+			strncpy(tmpStr + n, b->Data.v_string, sizeof(char) * m);
+			tmpStr[n + m] = '\0';
+			object_t* tmp = NewObjectString(tmpStr);
+			free(tmpStr);
+			return tmp;
 		}
 		case ARRAY: {
 			if (b->Kind != ARRAY) return NULL;
-			break;
+			int n = a->Data.v_array.len, m = b->Data.v_array.len;
+			object_t* tmp = NewObjectArray(n + m);
+			for (int i = 0; i < n; i++) {
+				set_array(tmp, i, get_array(a, i));
+			}
+			for (int i = 0; i < m; i++) {
+				set_array(tmp, i + n, get_array(b, i));
+			}
+			return tmp;
 		}
 		case VECTOR3: {
 			if (b->Kind != VECTOR3) return NULL;
-			break;
+			return NewObjectVector3(
+				add(a->Data.v_vector3.x, b->Data.v_vector3.x),
+				add(a->Data.v_vector3.y, b->Data.v_vector3.y),
+				add(a->Data.v_vector3.z, b->Data.v_vector3.z)
+			);
 		}
 		default:
 			return NULL;
@@ -190,7 +223,7 @@ void PrintObject(object_t* obj, char delim) {
 			break;
 		case ARRAY:
 			for (int i = 0; i < obj->Data.v_array.len; i++) {
-				PrintObject(obj->Data.v_array.data[i], ' ');
+				PrintObject(get_array(obj, i), ' ');
 			}
 			printf("%c", delim);
 			break;
@@ -198,6 +231,36 @@ void PrintObject(object_t* obj, char delim) {
 			printf("unknown data types\n");
 			break;
 	}
+}
+
+// do we need to assign NULL to freed pointer ????
+void freeObject(object_t* obj) {
+	if (obj == NULL) return;
+	switch (obj->Kind) {
+		case INT: {
+			return free(obj);
+		}
+		case FLOAT: {
+			return free(obj);
+		}
+		case STRING: {
+			if (obj->Data.v_string) free(obj->Data.v_string);
+			return free(obj);
+		}
+		case ARRAY: {
+			for (int i = 0; i < obj->Data.v_array.len; i++) {
+				freeObject(get_array(obj, i));
+			}
+		}
+		case VECTOR3: {
+			freeObject(obj->Data.v_vector3.x);
+			freeObject(obj->Data.v_vector3.y);
+			freeObject(obj->Data.v_vector3.z);
+		}
+		default:
+			return free(obj);
+	}
+	free(obj);
 }
 
 int main() {

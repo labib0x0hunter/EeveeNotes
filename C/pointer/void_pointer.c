@@ -15,7 +15,7 @@ void test(void* a) {
 
 void* return_from() {
 	int x = 40;
-	return (void*) (&x);
+	return (void*) (&x);	// hehehehehe, if you know, you know :)
 }
 
 void* return_from_escape_to_heap() {
