@@ -1,0 +1,1 @@
+# gcc -fsanitize=address -g object_final.c && (./a.out)

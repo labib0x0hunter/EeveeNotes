@@ -88,7 +88,8 @@ object_t* NewObjectArray(int size) {
 	}
 	obj->Kind = ARRAY;
 	obj->Data.v_array.len = size;
-	obj->Data.v_array.data = (object_t**) malloc(sizeof(object_t**) * size);
+	obj->Data.v_array.data = (object_t**) malloc(sizeof(object_t*) * size);
+	memset(obj->Data.v_array.data, 0, sizeof(object_t*) * size);
 	if (obj->Data.v_array.data == NULL) {
 		free(obj);
 		return NULL;
@@ -97,9 +98,9 @@ object_t* NewObjectArray(int size) {
 }
 
 object_t* NewObjectVector3(object_t* x, object_t* y, object_t* z) {
-	if (x == NULL || y == NULL || z == NULL) {
-		return NULL;
-	}
+	// if (x == NULL || y == NULL || z == NULL) {
+	// 	return NULL;
+	// }
 	object_t* obj = (object_t*) malloc(sizeof(object_t));
 	if (obj == NULL) {
 		return NULL;
@@ -251,52 +252,44 @@ void freeObject(object_t* obj) {
 	if (obj == NULL) return;
 	switch (obj->Kind) {
 		case INT: {
-			printf("INT - FREE\n");
+			// printf("INT - FREE\n");
 			free(obj);
-			obj = NULL;
 			return;
 		}
 		case FLOAT: {
-			printf("FLOAT - FREE\n");
+			// printf("FLOAT - FREE\n");
 			free(obj);
-			obj = NULL;
 			return;
 		}
 		case STRING: {
-			printf("STRING - FREE\n");
+			// printf("STRING - FREE\n");
 			if (obj->Data.v_string) {
 				free(obj->Data.v_string);
-				obj->Data.v_string = NULL;
 			}
 			free(obj);
-			obj = NULL;
 			return;
 		}
 		case ARRAY: {
-			printf("ARRAY - FREE\n");
+			// printf("ARRAY - FREE\n");
 			for (int i = 0; i < obj->Data.v_array.len; i++) {
 				freeObject(get_array(obj, i));
 			}
 			if (obj->Data.v_array.data) {
 				free (obj->Data.v_array.data);
-				obj->Data.v_array.data = NULL;
 			}
 			free(obj);
-			obj = NULL;
 			return;
 		}
 		case VECTOR3: {
-			printf("VECTOR3 - FREE\n");
+			// printf("VECTOR3 - FREE\n");
 			freeObject(obj->Data.v_vector3.x);
 			freeObject(obj->Data.v_vector3.y);
 			freeObject(obj->Data.v_vector3.z);
 			free(obj);
-			obj = NULL;
 			return;
 		}
 		default:
 			free(obj);
-			obj = NULL;
 			return;
 	}
 }
@@ -308,8 +301,8 @@ int main() {
 	object_t* obj1 = NewObjectInt(10);
 	object_t* obj2 = NewObjectFloat(20.012);
 
-	PrintObject(obj1, '\n');
-	PrintObject(obj2, '\n');
+	// PrintObject(obj1, '\n');
+	// PrintObject(obj2, '\n');
 
 	/* array */
 
@@ -318,27 +311,35 @@ int main() {
 	for (int i = 0; i < arr_size; i++) {
 		set_array(arr, i, NewObjectInt(i));
 	}
-	PrintObject(arr, '\n');
+	// PrintObject(arr, '\n');
 
 	/* string */
 	object_t* str = NewObjectString("HELLO WORLD");
 	if (str == NULL) {
 		printf("STR NULL");
 	}
-	PrintObject(str, '\n');
+	// PrintObject(str, '\n');
 
 	/* vector3 */
 	object_t* vec = NewObjectVector3(arr, str, obj1);
-	PrintObject(vec, '\n');
+	// PrintObject(vec, '\n');
+
+	object_t* vec1 = NewObjectVector3(vec, obj2, NULL);
+	if (vec1 == NULL) { printf("vec1 is NULL\n"); }
+	PrintObject(vec1, '\n');
 
 	printf("SUCCESFULLY PRINTTED ALL\n");
 
-	freeObject(obj1);
-	freeObject(obj2);
-	freeObject(str);
-	freeObject(arr);
+	// // vec will free them
+	// freeObject(obj1);
+	// freeObject(str);
+	// freeObject(arr);
 
-	freeObject(vec);
+	// // vec1 will free them now
+	// freeObject(obj2);
+	// freeObject(vec);
+
+	freeObject(vec1);
 
 	return 0;
 }
