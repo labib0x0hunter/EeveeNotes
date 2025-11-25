@@ -7,26 +7,39 @@
 #include<stddef.h>
 
 // Object Pool - Reuse allocated objects, instead of creating a new one..
+// But the object should be same size.
+// Free List - each pool element is node and connect these nodes using linked list..
+// get the head of the linked list.
+// back at the head of the linked list.
 
 typedef struct Pair {
 	int first, second;
 } pair_t;
 
-typedef struct {
-	bool allocated;
+typedef struct PoolElem{
 	pair_t obj;
+	struct PoolElem* next;
 } pool_elem_t;
 
 const int POOL_SIZE = 10;
 pool_elem_t object_pool[POOL_SIZE] = {{0}};
+pool_elem_t* freeList = NULL;
+
+void init_pool() {
+	for (int i = 0; i + 1 < POOL_SIZE; i++) {
+		object_pool[i].next = &object_pool[i + 1];
+	}
+	object_pool[POOL_SIZE - 1].next = NULL;
+	freeList = &object_pool[0];
+}
 
 pair_t* Get() {
-	for (int i = 0; i < POOL_SIZE; i++) {
-		if (object_pool[i].allocated) continue;
-		object_pool[i].allocated = true;
-		return &object_pool[i].obj;	// return the address
+	if (freeList == NULL) {	// no free object
+		return NULL;
 	}
-	return NULL; // no free object
+	pair_t* obj = &(freeList->obj);	// extract object
+	freeList = freeList->next;	// move to the next
+	return obj;
 }
 
 bool Put(pair_t* obj) {
@@ -37,11 +50,17 @@ bool Put(pair_t* obj) {
 	int idx = (obj_addr - pool_addr) / size;	// index of the obj in pool
 	if (idx >= POOL_SIZE || idx < 0) return false;
     if ((uintptr_t)(idx * size) + pool_addr != obj_addr) return false; // must be a multiplier..
-	object_pool[idx].allocated = false;	// pool claims that memory
+	
+	// make head
+	pool_elem_t* which_to_put = &object_pool[idx];
+	which_to_put->next = freeList;	// make chain
+	freeList = which_to_put;	// make head
 	return true;
 }
 
 int main() {
+
+	init_pool();
 
 	pair_t* obj = Get();
 	obj = Get();
