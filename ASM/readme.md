@@ -2,19 +2,19 @@
 ---
 8086 microprocessor
 # Mac (M1) Setup
-- https://www.dosbox-staging.org/ 
+- Install DosBox : https://www.dosbox-staging.org/ 
 ```
 mkdir ~/dos/asm
 ```
+- Mount folder as C drive
 ```
 mount c ~/dos/asm
 c:
 ```
-- Get masm.exe and link.exe (Microsoft Macro Assembler)
+- Get jwasm.exe and link.exe (Microsoft Macro Assembler)
 ```
-masm hello.asm
-link hello.obj
-hello.exe
+jwasm -mz hello.asm
+hello
 ```
 
 ![Running ASM program](run-asm.gif)
