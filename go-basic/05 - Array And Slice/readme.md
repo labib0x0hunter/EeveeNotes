@@ -14,12 +14,17 @@ Precise reasoning: len, cap, backing array, reallocation.
 - Array has fixed size, Slice is just a piece of an array (we call it dynamic array).
 - This `a1` is array of zero length and capacity.
 ```go
-a1 := [...]int{}  // same as [0]int
-a2 := [...]int{1, 2, 3} // same as [3]int{1, 2, 3}, Then why it is used ?
+a1 := [...]int{}         // same as [0]int
+a2 := [...]int{1, 2, 3}  // same as [3]int{1, 2, 3}, Then why it is used ?
 ```
 - 2D array
 ```go
 var x [n][m]int
+```
+- Array vs Slice
+```go
+x := []int{1, 2, 3}     // Slice
+x := [3]int{1, 2, 3}    // Array
 ```
 ---
 

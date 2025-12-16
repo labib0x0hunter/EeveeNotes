@@ -84,3 +84,27 @@ Q4. You are given an array of distinct integers.
         - What condition invalidates the array
         - How you distinguish pure sorted vs rotated sorted
 ```
+
+```text
+Q5. You are given an array of size n+1 containing integers in the range [1, n].
+    A = [3, 1, 3, 4, 2]
+
+    Constraints:
+        - Exactly one number is duplicated
+        - It may appear multiple times
+        - Array is read-only
+        - No extra space
+        - Do not modify the array
+
+    Task:
+        - Explain the algorithm to find the duplicate.
+
+    You must state:
+        - The core idea (mapping / invariant)
+        - Why it works mathematically
+        - Time complexity
+        - Space complexity
+
+    Bonus Question:
+        - Can this problem be solved using binary search on value range without modifying the array?
+```

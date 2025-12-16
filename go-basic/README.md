@@ -4,7 +4,7 @@
 - 02-Condition
 - 03-Loop
 - 04-Function
-- 05-Array-And-Slices
+- 05-Array-And-Slice
 - 06-Scope-And-Shadowing
 - 07-Map
 - 08-Struct
