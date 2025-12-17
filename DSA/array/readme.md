@@ -7,6 +7,7 @@
 - two pointer
 - merge : Given two static array, merge them. Given two sorted array, merge them and output array must be sorted.
 - sort : Given a static array, sort them using bubble sort, quick sort and merge sort.
+- rotation : Given an static array and k, rotate the array by k left or right. Use mod if k >= n, and also use reverse technique.
 ---
 
 # Quiz

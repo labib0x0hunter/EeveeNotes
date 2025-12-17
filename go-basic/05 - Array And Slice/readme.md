@@ -11,7 +11,12 @@ Precise reasoning: len, cap, backing array, reallocation.
 
 ---
 # Notes
-- Array has fixed size, Slice is just a piece of an array (we call it dynamic array).
+- Array has fixed size, Slice is a header struct with a backed array (we call it dynamic array).
+- When we pass a array using Pass by value, entire array is being copied, for slice it is just 24byte header. 
+- In function (pass by value), for array it doesn't affect the original array, but for slice it may modify if reallocation not occurs.
+- Array not flexible, slice is flexible.
+- `append()` returns a new slice.
+- s[lo:hi:max] sets max capacity to slice. s[lo:hi], cap = cap(s) - lo, s[lo:hi:max], cap = max - lo
 - This `a1` is array of zero length and capacity.
 ```go
 a1 := [...]int{}         // same as [0]int
@@ -189,5 +194,9 @@ Q20. What is the output ? Under exactly which capacity condition does this break
         mutate(s[:2])
         fmt.Println(s)
     }
+```
+
+```text
+Q21. How does make() works?
 ```
 ---

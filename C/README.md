@@ -22,3 +22,4 @@ memmove(&arr[idx + 1], &arr[idx], sizeof(int) * 3);   // move 3 int
 ```
 
 - bool : must include `<stdbool.h>` header.
+- socket header: `<sys/socket.h>` and `<netinet/in.h>`.
