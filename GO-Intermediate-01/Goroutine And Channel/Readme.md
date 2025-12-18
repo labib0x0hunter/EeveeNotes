@@ -148,3 +148,5 @@ This cements understanding.
 ## Resources 
 - https://medium.com/%40ravikumar19997/exploring-the-depths-of-golang-channels-a-comprehensive-guide-53e1a97cafe6
 - https://cristiancurteanu.com/7-powerful-golang-concurrency-patterns-that-will-transform-your-code-in-2025/?utm_source=chatgpt.com
+- [Goroutines: Under the Hood | Vicki Niu](https://www.youtube.com/watch?v=S-MaTH8WpOM&t=1194s)
+- [Understanding Channels - Kavya Joshi](https://www.youtube.com/watch?v=KBZlN0izeiY&t=191s)
